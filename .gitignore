@@ -3,3 +3,4 @@
 *.DotSettings.user
 **/.vs/*
 /**/*.user
+/.vscode/**

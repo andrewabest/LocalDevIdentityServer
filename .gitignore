@@ -1,0 +1,5 @@
+/DockerIdentityServer*/obj/*
+/DockerIdentityServer*/bin/*
+*.DotSettings.user
+**/.vs/*
+/**/*.user

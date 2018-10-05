@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace DockerIdentityServer
+namespace LocalDevIdentityServer
 {
     public class Startup
     {
@@ -13,15 +13,13 @@ namespace DockerIdentityServer
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(IdentityConfig.GetApiResources())
                 .AddInMemoryClients(IdentityConfig.GetClients())
+                .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())
                 .AddTestUsers(IdentityConfig.GetUsers());
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
-            loggerFactory.AddConsole(LogLevel.Debug);
-
             app.UseDeveloperExceptionPage();
-
             app.UseIdentityServer();
         }
     }

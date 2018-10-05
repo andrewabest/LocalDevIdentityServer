@@ -3,7 +3,7 @@ using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
-namespace DockerIdentityServer
+namespace LocalDevIdentityServer
 {
     public static class IdentityConfig
     {
@@ -17,6 +17,18 @@ namespace DockerIdentityServer
             };
         }
 
+        public static IEnumerable<IdentityResource> GetIdentityResources()
+        {
+            return new List<IdentityResource>
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Email(),
+                new IdentityResources.Profile(),
+                new IdentityResources.Phone(),
+                new IdentityResources.Address()
+            };
+        }
+
         public static IEnumerable<Client> GetClients()
         {
             return new List<Client>
@@ -24,39 +36,21 @@ namespace DockerIdentityServer
                 new Client
                 {
                     ClientId = "client",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedGrantTypes = GrantTypes.Hybrid,
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { ApiResourceName }
-                },
-
-                new Client
-                {
-                    ClientId = "ro.client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-
-                    ClientSecrets =
+                    AllowedScopes =
                     {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes = { ApiResourceName }
-                },
-
-                new Client
-                {
-                    ClientId = "roclient.public",
-                    ClientName = "roclient.public",
-                    RequireClientSecret = false,
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                    AllowOfflineAccess = true,
-                    AllowedScopes = new List<string>
-                    {
-                        ApiResourceName,
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
-                    }
-                },
+                        ApiResourceName
+                    },
+                    RedirectUris = { "https://localhost:8090/api/authorize" }
+                }
             };
         }
 

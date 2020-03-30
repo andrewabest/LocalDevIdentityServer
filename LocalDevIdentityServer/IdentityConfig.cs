@@ -37,6 +37,7 @@ namespace LocalDevIdentityServer
                 {
                     ClientId = "client",
                     AllowedGrantTypes = GrantTypes.Code,
+                    
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())

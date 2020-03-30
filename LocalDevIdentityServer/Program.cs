@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using Serilog.Events;
@@ -22,12 +23,9 @@ namespace LocalDevIdentityServer
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
 
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseUrls("http://*:80")
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+            var host =  WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseUrls("https://*:8080")
                 .UseSerilog()
                 .Build();
 
